@@ -243,7 +243,7 @@ export default function ContactForm() {
               </button>
 
               <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-wider text-signal-white/30">
-                We respond within 1 business day. No spam. Ever.
+                We respond within 3 business days. No spam. Ever.
               </p>
             </motion.form>
           )}

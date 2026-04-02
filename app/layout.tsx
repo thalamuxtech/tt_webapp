@@ -37,6 +37,10 @@ const clashDisplay = localFont({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   metadataBase: new URL("https://thalamuxtech.com"),
   title: {
     default: "Thalamux Tech — The Intelligent Gateway",
