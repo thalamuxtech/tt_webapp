@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { useToast } from "./Toast";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
@@ -64,6 +65,7 @@ const socialLinks = [
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const toast = useToast();
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,9 +78,11 @@ export default function Footer() {
       });
       setSubscribed(true);
       setEmail("");
+      toast.success("Subscribed!", "You'll receive our intelligence dispatches.");
       setTimeout(() => setSubscribed(false), 4000);
     } catch (error) {
       console.error("Signup error:", error);
+      toast.error("Signup Failed", "Please try again later.");
     }
   };
 

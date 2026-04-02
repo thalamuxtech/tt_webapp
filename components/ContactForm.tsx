@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle2, Loader2 } from "lucide-react";
+import { Send, Loader2, XCircle, ArrowRight, Sparkles } from "lucide-react";
 import SectionHeading from "./SectionHeading";
+import { useToast } from "./Toast";
 import dynamic from "next/dynamic";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -37,9 +38,95 @@ const services = [
   { value: "full_suite", label: "Full Suite" },
 ];
 
+// Animated checkmark SVG
+function AnimatedCheck() {
+  return (
+    <div className="relative mx-auto h-20 w-20">
+      {/* Outer ring */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="absolute inset-0 rounded-full border-2 border-emerald-500/30"
+      />
+      {/* Pulsing glow */}
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: [0.8, 1.4, 1.2], opacity: [0, 0.3, 0] }}
+        transition={{ duration: 1.2, delay: 0.2 }}
+        className="absolute inset-0 rounded-full bg-emerald-500/20"
+      />
+      {/* Inner circle */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.15 }}
+        className="absolute inset-2 flex items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-circuit-teal"
+      >
+        {/* Check SVG */}
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <motion.path
+            d="M6 12.5L10 16.5L18 8.5"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+          />
+        </svg>
+      </motion.div>
+      {/* Sparkle particles */}
+      {[...Array(6)].map((_, i) => {
+        const angle = (i / 6) * Math.PI * 2;
+        const x = Math.cos(angle) * 44;
+        const y = Math.sin(angle) * 44;
+        return (
+          <motion.div
+            key={i}
+            initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
+            animate={{ scale: [0, 1, 0], x, y, opacity: [1, 1, 0] }}
+            transition={{ duration: 0.8, delay: 0.3 + i * 0.06 }}
+            className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-synapse-gold"
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+// Animated error icon
+function AnimatedError() {
+  return (
+    <div className="relative mx-auto h-20 w-20">
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="absolute inset-0 rounded-full border-2 border-red-500/30"
+      />
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: [0.8, 1.3, 1.1], opacity: [0, 0.25, 0] }}
+        transition={{ duration: 1, delay: 0.2 }}
+        className="absolute inset-0 rounded-full bg-red-500/20"
+      />
+      <motion.div
+        initial={{ scale: 0, rotate: -90 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.15 }}
+        className="absolute inset-2 flex items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-red-600"
+      >
+        <XCircle size={30} className="text-white" strokeWidth={2} />
+      </motion.div>
+    </div>
+  );
+}
+
 export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const toast = useToast();
 
   const {
     register,
@@ -51,7 +138,7 @@ export default function ContactForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    setSubmitting(true);
+    setStatus("submitting");
     try {
       await addDoc(collection(db, "service_requests"), {
         ...data,
@@ -60,27 +147,32 @@ export default function ContactForm() {
         readAt: null,
         createdAt: serverTimestamp(),
       });
-      setSubmitted(true);
+      setStatus("success");
       reset();
-      setTimeout(() => setSubmitted(false), 5000);
+      toast.success(
+        "Request Submitted!",
+        "Our team will review and respond within 3 business days."
+      );
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
+      setStatus("error");
+      toast.error(
+        "Submission Failed",
+        "Something went wrong. Please try again or contact us directly."
+      );
     }
   };
 
+  const resetForm = () => setStatus("idle");
+
   const inputClass =
-    "w-full rounded-lg border border-pulse-blue/15 bg-surface-deepest/80 px-4 py-3.5 text-sm text-signal-white placeholder:font-mono placeholder:text-[12px] placeholder:text-signal-white/30 transition-all focus:border-pulse-blue focus:outline-none focus:ring-2 focus:ring-pulse-blue/15";
-  const errorClass = "mt-1 text-xs text-red-400";
+    "w-full rounded-xl border border-pulse-blue/15 bg-surface-deepest/80 px-4 py-3.5 text-sm text-signal-white placeholder:font-mono placeholder:text-[12px] placeholder:text-signal-white/30 transition-all duration-200 focus:border-pulse-blue focus:outline-none focus:ring-2 focus:ring-pulse-blue/15";
 
   return (
     <section
       id="contact"
       className="relative overflow-hidden bg-gradient-to-b from-surface-mid to-surface-deepest py-24 sm:py-32 lg:py-40"
     >
-      {/* Particles at low opacity */}
       <div className="absolute inset-0 opacity-30">
         <NeuralParticles />
       </div>
@@ -93,38 +185,118 @@ export default function ContactForm() {
         />
 
         <AnimatePresence mode="wait">
-          {submitted ? (
+          {/* Success State */}
+          {status === "success" && (
             <motion.div
               key="success"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="glass-card mx-auto max-w-md rounded-2xl p-10 text-center"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="glass-card mx-auto max-w-lg rounded-2xl p-10 text-center sm:p-12"
             >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", delay: 0.1 }}
+              <AnimatedCheck />
+
+              <motion.h3
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-7 font-clash text-2xl font-bold text-signal-white"
               >
-                <CheckCircle2
-                  size={56}
-                  className="mx-auto text-circuit-teal"
-                />
+                Request Received!
+              </motion.h3>
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="mt-3 text-sm leading-relaxed text-signal-white/55"
+              >
+                Thank you for reaching out. Our intelligence team will review
+                your submission and respond within{" "}
+                <span className="font-medium text-circuit-teal">3 business days</span>.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-[12px] font-medium text-emerald-400"
+              >
+                <Sparkles size={14} />
+                No noise. Just action.
               </motion.div>
-              <h3 className="mt-5 font-clash text-2xl font-bold text-signal-white">
-                Request Received
-              </h3>
-              <p className="mt-2 text-sm text-signal-white/60">
-                Our team will review your submission and respond within 1
-                business day. No noise. Just action.
-              </p>
+
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                onClick={resetForm}
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl border border-signal-white/10 py-3 text-sm text-signal-white/50 transition-all hover:border-signal-white/20 hover:text-signal-white/70"
+              >
+                Submit another request
+                <ArrowRight size={14} />
+              </motion.button>
             </motion.div>
-          ) : (
+          )}
+
+          {/* Error State */}
+          {status === "error" && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="glass-card mx-auto max-w-lg rounded-2xl p-10 text-center sm:p-12"
+            >
+              <AnimatedError />
+
+              <motion.h3
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-7 font-clash text-2xl font-bold text-signal-white"
+              >
+                Something Went Wrong
+              </motion.h3>
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="mt-3 text-sm leading-relaxed text-signal-white/55"
+              >
+                We couldn&apos;t process your request right now. Please try
+                again or reach us directly at{" "}
+                <a
+                  href="mailto:hello@thalamuxtech.com"
+                  className="text-pulse-blue hover:underline"
+                >
+                  hello@thalamuxtech.com
+                </a>
+              </motion.p>
+
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                onClick={resetForm}
+                className="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-pulse-blue px-6 py-3.5 font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-[#1a6aee] hover:shadow-[0_0_30px_rgba(46,125,255,0.3)]"
+              >
+                Try Again
+              </motion.button>
+            </motion.div>
+          )}
+
+          {/* Form State */}
+          {(status === "idle" || status === "submitting") && (
             <motion.form
               key="form"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
               onSubmit={handleSubmit(onSubmit)}
               className="glass-card rounded-2xl p-6 sm:p-10"
             >
@@ -140,9 +312,19 @@ export default function ContactForm() {
                     placeholder="e.g. John Doe"
                     className={inputClass}
                   />
-                  {errors.name && (
-                    <p className={errorClass}>{errors.name.message}</p>
-                  )}
+                  <AnimatePresence>
+                    {errors.name && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.name.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Company */}
@@ -156,9 +338,19 @@ export default function ContactForm() {
                     placeholder="e.g. Acme Corp"
                     className={inputClass}
                   />
-                  {errors.company && (
-                    <p className={errorClass}>{errors.company.message}</p>
-                  )}
+                  <AnimatePresence>
+                    {errors.company && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.company.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Email */}
@@ -172,9 +364,19 @@ export default function ContactForm() {
                     placeholder="you@company.com"
                     className={inputClass}
                   />
-                  {errors.email && (
-                    <p className={errorClass}>{errors.email.message}</p>
-                  )}
+                  <AnimatePresence>
+                    {errors.email && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.email.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Service */}
@@ -200,9 +402,19 @@ export default function ContactForm() {
                       </option>
                     ))}
                   </select>
-                  {errors.service && (
-                    <p className={errorClass}>{errors.service.message}</p>
-                  )}
+                  <AnimatePresence>
+                    {errors.service && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.service.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
@@ -218,29 +430,54 @@ export default function ContactForm() {
                   placeholder="Describe your data challenges, goals, or vision..."
                   className={`${inputClass} resize-none`}
                 />
-                {errors.message && (
-                  <p className={errorClass}>{errors.message.message}</p>
-                )}
+                <AnimatePresence>
+                  {errors.message && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5, height: 0 }}
+                      animate={{ opacity: 1, y: 0, height: "auto" }}
+                      exit={{ opacity: 0, y: -5, height: 0 }}
+                      className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                    >
+                      <XCircle size={12} />
+                      {errors.message.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Submit */}
-              <button
+              <motion.button
                 type="submit"
-                disabled={submitting}
-                className="mt-7 flex w-full items-center justify-center gap-2 rounded-lg bg-pulse-blue px-6 py-4 font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-[#1a6aee] hover:shadow-[0_0_30px_rgba(46,125,255,0.35)] disabled:pointer-events-none disabled:opacity-60"
+                disabled={status === "submitting"}
+                whileTap={{ scale: 0.98 }}
+                className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-pulse-blue px-6 py-4 font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-[#1a6aee] hover:shadow-[0_0_30px_rgba(46,125,255,0.35)] disabled:pointer-events-none disabled:opacity-60"
               >
-                {submitting ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    <Send size={16} />
-                    Submit Request
-                  </>
-                )}
-              </button>
+                <AnimatePresence mode="wait">
+                  {status === "submitting" ? (
+                    <motion.span
+                      key="loading"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2"
+                    >
+                      <Loader2 size={18} className="animate-spin" />
+                      Submitting...
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="idle"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2"
+                    >
+                      <Send size={16} />
+                      Submit Request
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
 
               <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-wider text-signal-white/30">
                 We respond within 3 business days. No spam. Ever.

@@ -81,8 +81,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${clashDisplay.variable} ${geistMono.variable} ${brandScript.variable} font-inter antialiased`}
       >
-        {children}
+        <ToastWrapper>{children}</ToastWrapper>
       </body>
     </html>
   );
 }
+
+// Client wrapper for ToastProvider (layout.tsx is a Server Component)
+import dynamic from "next/dynamic";
+const ToastWrapper = dynamic(
+  () => import("@/components/Toast").then((m) => m.ToastProvider),
+  { ssr: false }
+);
