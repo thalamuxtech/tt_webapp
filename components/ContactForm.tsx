@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, CheckCircle2, Loader2 } from "lucide-react";
 import SectionHeading from "./SectionHeading";
 import dynamic from "next/dynamic";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const NeuralParticles = dynamic(() => import("./NeuralParticles"), {
   ssr: false,
@@ -50,13 +52,23 @@ export default function ContactForm() {
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
-    // Simulate submission (replace with actual Firestore write later)
-    await new Promise((r) => setTimeout(r, 1500));
-    console.log("Form submitted:", data);
-    setSubmitting(false);
-    setSubmitted(true);
-    reset();
-    setTimeout(() => setSubmitted(false), 5000);
+    try {
+      await addDoc(collection(db, "service_requests"), {
+        ...data,
+        status: "new",
+        emailSent: false,
+        readAt: null,
+        createdAt: serverTimestamp(),
+      });
+      setSubmitted(true);
+      reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputClass =

@@ -8,10 +8,12 @@ import TrustedBy from "@/components/TrustedBy";
 import TrustMetrics from "@/components/TrustMetrics";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import FirebaseAnalytics from "@/components/FirebaseAnalytics";
 
 export default function Home() {
   return (
     <>
+      <FirebaseAnalytics />
       <NavBar />
       <main>
         <Hero />

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight, Globe, MessageCircle, Code2, Mail } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const serviceLinks = [
   { label: "Data", href: "#services" },
@@ -30,13 +32,21 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    console.log("Newsletter signup:", email);
-    setSubscribed(true);
-    setEmail("");
-    setTimeout(() => setSubscribed(false), 4000);
+    try {
+      await addDoc(collection(db, "signups"), {
+        email,
+        source: "footer_newsletter",
+        createdAt: serverTimestamp(),
+      });
+      setSubscribed(true);
+      setEmail("");
+      setTimeout(() => setSubscribed(false), 4000);
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
   };
 
   return (
