@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -17,6 +18,9 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0
 
 // Firestore
 export const db = getFirestore(app);
+
+// Auth
+export const auth = getAuth(app);
 
 // Analytics (only in browser)
 export const initAnalytics = async () => {

@@ -9,6 +9,7 @@ import TrustMetrics from "@/components/TrustMetrics";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import FirebaseAnalytics from "@/components/FirebaseAnalytics";
+import AdminLoginButton from "@/components/AdminLoginButton";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <ContactForm />
       </main>
       <Footer />
+      <AdminLoginButton />
     </>
   );
 }
