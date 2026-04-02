@@ -44,7 +44,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="font-clash text-[clamp(2.2rem,7vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-signal-white"
+          className="font-clash text-[clamp(1.75rem,6vw,5.5rem)] font-bold leading-[1.08] tracking-tight text-signal-white"
         >
           Data for insights,
           <br />

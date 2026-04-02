@@ -107,9 +107,9 @@ export default function TrustedBy() {
       {/* Auto-scrolling marquee */}
       <div className="relative">
         {/* Left fade */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-surface-deepest to-transparent sm:w-40" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-surface-deepest to-transparent min-[480px]:w-24 sm:w-40" />
         {/* Right fade */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-surface-deepest to-transparent sm:w-40" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-surface-deepest to-transparent min-[480px]:w-24 sm:w-40" />
 
         {/* Marquee row 1 — left to right */}
         <div className="mb-4 flex animate-marquee gap-4">

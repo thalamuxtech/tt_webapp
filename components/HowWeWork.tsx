@@ -68,7 +68,7 @@ export default function HowWeWork() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer(0.12, 0.1)}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-4 min-[480px]:grid-cols-2 lg:grid-cols-4 lg:gap-5"
         >
           {steps.map((step, i) => (
             <motion.div
@@ -84,9 +84,9 @@ export default function HowWeWork() {
                 </div>
               )}
 
-              <div className="relative h-full overflow-hidden rounded-2xl border border-signal-white/[0.06] bg-surface-raised/40 p-6 transition-all duration-500 hover:border-signal-white/[0.1] hover:bg-surface-raised/70">
+              <div className="relative h-full overflow-hidden rounded-2xl border border-signal-white/[0.06] bg-surface-raised/40 p-5 transition-all duration-500 hover:border-signal-white/[0.1] hover:bg-surface-raised/70 sm:p-6">
                 {/* Step number — large background */}
-                <span className="absolute -right-2 -top-4 font-clash text-[100px] font-bold leading-none text-signal-white/[0.025]">
+                <span className="absolute -right-2 -top-4 font-clash text-[70px] font-bold leading-none text-signal-white/[0.025] sm:text-[100px]">
                   {step.num}
                 </span>
 

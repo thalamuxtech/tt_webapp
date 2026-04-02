@@ -17,7 +17,7 @@ export default function BrandStatement() {
           <ScrollReveal variants={slideFromLeft}>
             <div className="relative flex items-center justify-center">
               {/* Thalamus node SVG */}
-              <div className="relative h-[320px] w-[320px] sm:h-[400px] sm:w-[400px]">
+              <div className="relative h-[260px] w-[260px] min-[400px]:h-[300px] min-[400px]:w-[300px] sm:h-[400px] sm:w-[400px]">
                 <svg
                   viewBox="0 0 400 400"
                   fill="none"

@@ -96,7 +96,7 @@ export default function Pillars() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer(0.08, 0.15)}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+          className="grid gap-4 min-[480px]:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:grid-cols-5"
         >
           {pillars.map((pillar) => (
             <motion.div

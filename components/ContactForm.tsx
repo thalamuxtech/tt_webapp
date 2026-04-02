@@ -426,7 +426,7 @@ export default function ContactForm() {
                 </label>
                 <textarea
                   {...register("message")}
-                  rows={5}
+                  rows={4}
                   placeholder="Describe your data challenges, goals, or vision..."
                   className={`${inputClass} resize-none`}
                 />

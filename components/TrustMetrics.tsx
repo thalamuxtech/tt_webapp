@@ -74,7 +74,7 @@ export default function TrustMetrics() {
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-pulse-blue/10">
             {metrics.map((metric) => (
               <div key={metric.label} className="text-center lg:px-8">
-                <div className="font-clash text-4xl font-bold text-signal-white sm:text-5xl">
+                <div className="font-clash text-3xl font-bold text-signal-white sm:text-4xl lg:text-5xl">
                   <CountUp value={metric.value} suffix={metric.suffix} />
                 </div>
                 <p className="mt-2 text-sm font-medium text-signal-white/80">
