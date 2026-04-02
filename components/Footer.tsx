@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ArrowRight, Globe, MessageCircle, Code2, Mail } from "lucide-react";
 
 const serviceLinks = [
@@ -48,25 +49,17 @@ export default function Footer() {
           {/* Col 1: Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             {/* Logo */}
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex h-8 w-8 items-center justify-center">
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-pulse-blue to-circuit-teal opacity-20" />
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="relative z-10"
-                >
-                  <circle cx="12" cy="12" r="4" fill="#2E7DFF" />
-                  <line x1="12" y1="2" x2="12" y2="6" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                  <line x1="12" y1="18" x2="12" y2="22" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                  <line x1="2" y1="12" x2="6" y2="12" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                  <line x1="18" y1="12" x2="22" y2="12" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                </svg>
+            <div className="flex items-center gap-3">
+              <div className="relative h-10 w-10 overflow-hidden rounded-xl">
+                <Image
+                  src="/images/logo.png"
+                  alt="Thalamux Tech"
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <span className="font-clash text-base font-bold text-signal-white">
-                THALAMUX <span className="text-pulse-blue/70">TECH</span>
+              <span className="font-brand-script text-xl text-signal-white">
+                Thalamux <span className="text-pulse-blue">Tech</span>
               </span>
             </div>
 

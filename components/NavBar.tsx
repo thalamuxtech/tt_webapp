@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   Menu,
   X,
@@ -44,101 +45,102 @@ export default function NavBar() {
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "border-b border-pulse-blue/10 bg-surface-deepest/85 backdrop-blur-xl"
-            : "bg-transparent"
-        }`}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+        className="fixed left-0 right-0 top-0 z-50"
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5">
-            <div className="relative flex h-9 w-9 items-center justify-center">
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-pulse-blue to-circuit-teal opacity-20" />
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="relative z-10"
-              >
-                <circle cx="12" cy="12" r="4" fill="#2E7DFF" />
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="4"
-                  fill="none"
-                  stroke="#2E7DFF"
-                  strokeWidth="0.5"
-                  opacity="0.5"
-                >
-                  <animate
-                    attributeName="r"
-                    values="4;8;4"
-                    dur="3s"
-                    repeatCount="indefinite"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    values="0.5;0;0.5"
-                    dur="3s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <line x1="12" y1="2" x2="12" y2="6" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                <line x1="12" y1="18" x2="12" y2="22" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                <line x1="2" y1="12" x2="6" y2="12" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                <line x1="18" y1="12" x2="22" y2="12" stroke="#2E7DFF" strokeWidth="1.5" opacity="0.6" />
-                <line x1="4.9" y1="4.9" x2="7.8" y2="7.8" stroke="#00B4A6" strokeWidth="1" opacity="0.4" />
-                <line x1="16.2" y1="16.2" x2="19.1" y2="19.1" stroke="#00B4A6" strokeWidth="1" opacity="0.4" />
-                <line x1="4.9" y1="19.1" x2="7.8" y2="16.2" stroke="#00B4A6" strokeWidth="1" opacity="0.4" />
-                <line x1="16.2" y1="7.8" x2="19.1" y2="4.9" stroke="#00B4A6" strokeWidth="1" opacity="0.4" />
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-clash text-lg font-bold leading-none tracking-tight text-signal-white">
-                THALAMUX
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
+          {/* Logo — separate element, left side */}
+          <a
+            href="#"
+            className="group flex shrink-0 items-center gap-3 transition-all duration-500"
+          >
+            {/* Logo image with smooth size transition */}
+            <motion.div
+              animate={{
+                width: scrolled ? 36 : 44,
+                height: scrolled ? 36 : 44,
+              }}
+              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              className="relative overflow-hidden rounded-xl"
+            >
+              <Image
+                src="/images/logo.png"
+                alt="Thalamux Tech"
+                fill
+                className="object-contain drop-shadow-[0_0_8px_rgba(46,125,255,0.3)]"
+                priority
+              />
+            </motion.div>
+
+            {/* Brand name — script font */}
+            <motion.div
+              animate={{
+                opacity: scrolled ? 0 : 1,
+                width: scrolled ? 0 : "auto",
+                marginRight: scrolled ? 0 : 0,
+              }}
+              transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              <span className="font-brand-script text-2xl tracking-wide text-signal-white">
+                Thalamux{" "}
+                <span className="text-pulse-blue">Tech</span>
               </span>
-              <span className="font-mono text-[10px] tracking-[0.25em] text-pulse-blue/80">
-                TECH
-              </span>
-            </div>
+            </motion.div>
           </a>
 
-          {/* Desktop nav links */}
-          <div className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((link, i) => (
-              <span key={link.label} className="flex items-center">
+          {/* Desktop menu bar — rounded rectangle, separate from logo */}
+          <div
+            className={`hidden flex-1 items-center justify-between rounded-2xl border px-2 py-1.5 transition-all duration-500 lg:flex ${
+              scrolled
+                ? "border-pulse-blue/15 bg-surface-deepest/80 shadow-[0_4px_30px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
+                : "border-signal-white/[0.06] bg-signal-white/[0.03] backdrop-blur-md"
+            }`}
+          >
+            {/* Nav links */}
+            <div className="flex items-center gap-0.5 px-1">
+              {navLinks.map((link) => (
                 <a
+                  key={link.label}
                   href={link.href}
-                  className="px-3 py-2 font-mono text-xs uppercase tracking-wider text-signal-white/70 transition-colors hover:text-signal-white"
+                  className="group relative rounded-xl px-4 py-2 font-mono text-xs uppercase tracking-wider text-signal-white/60 transition-all duration-300 hover:bg-signal-white/[0.06] hover:text-signal-white"
                 >
-                  {link.label}
+                  <span className="relative z-10">{link.label}</span>
                 </a>
-                {i < navLinks.length - 1 && (
-                  <span className="text-synapse-gold/30">|</span>
-                )}
-              </span>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* CTA + Hamburger */}
-          <div className="flex items-center gap-4">
+            {/* CTA */}
             <a
               href="#contact"
-              className="hidden rounded-md border border-synapse-gold/60 px-5 py-2 font-mono text-xs uppercase tracking-wider text-synapse-gold transition-all hover:border-synapse-gold hover:bg-synapse-gold/10 hover:shadow-[0_0_20px_rgba(212,168,67,0.15)] sm:block"
+              className="rounded-xl border border-synapse-gold/50 bg-synapse-gold/[0.06] px-5 py-2 font-mono text-[11px] uppercase tracking-wider text-synapse-gold transition-all duration-300 hover:border-synapse-gold hover:bg-synapse-gold/15 hover:shadow-[0_0_20px_rgba(212,168,67,0.12)]"
             >
               Contact Us
             </a>
+          </div>
+
+          {/* Mobile: hamburger button with pill background */}
+          <div
+            className={`ml-auto flex items-center gap-3 rounded-2xl border px-3 py-2 transition-all duration-500 lg:hidden ${
+              scrolled
+                ? "border-pulse-blue/15 bg-surface-deepest/80 backdrop-blur-2xl"
+                : "border-signal-white/[0.06] bg-signal-white/[0.03] backdrop-blur-md"
+            }`}
+          >
+            <a
+              href="#contact"
+              className="hidden rounded-lg border border-synapse-gold/50 px-4 py-1.5 font-mono text-[10px] uppercase tracking-wider text-synapse-gold transition-all hover:bg-synapse-gold/10 sm:block"
+            >
+              Contact
+            </a>
             <button
               onClick={() => setMobileOpen(true)}
-              className="p-2 text-signal-white lg:hidden"
+              className="rounded-lg p-1.5 text-signal-white/70 transition-all hover:bg-signal-white/[0.06] hover:text-signal-white"
               aria-label="Open menu"
             >
-              <Menu size={24} />
+              <Menu size={20} />
             </button>
           </div>
         </div>
@@ -151,43 +153,64 @@ export default function NavBar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-[60] bg-surface-deepest/97 backdrop-blur-2xl"
           >
-            <div className="flex h-full flex-col px-8 py-6">
-              {/* Close button */}
-              <div className="flex justify-end">
+            <div className="flex h-full flex-col px-6 py-5">
+              {/* Top bar: logo + close */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="relative h-10 w-10 overflow-hidden rounded-xl">
+                    <Image
+                      src="/images/logo.png"
+                      alt="Thalamux Tech"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="font-brand-script text-xl text-signal-white">
+                    Thalamux <span className="text-pulse-blue">Tech</span>
+                  </span>
+                </div>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="p-2 text-signal-white"
+                  className="rounded-xl p-2 text-signal-white/70 transition-colors hover:bg-signal-white/[0.06] hover:text-signal-white"
                   aria-label="Close menu"
                 >
-                  <X size={28} />
+                  <X size={24} />
                 </button>
               </div>
 
               {/* Mobile links */}
-              <div className="flex flex-1 flex-col items-center justify-center gap-8">
+              <div className="flex flex-1 flex-col items-center justify-center gap-3">
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
-                    initial={{ opacity: 0, x: -40 }}
+                    initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.08 + 0.1 }}
+                    transition={{
+                      delay: i * 0.06 + 0.1,
+                      duration: 0.4,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-4 text-2xl font-clash font-bold text-signal-white"
+                    className="flex w-full max-w-xs items-center gap-4 rounded-2xl px-6 py-4 text-lg font-clash font-bold text-signal-white transition-all hover:bg-signal-white/[0.04]"
                   >
-                    <link.icon size={24} className="text-pulse-blue" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pulse-blue/10">
+                      <link.icon size={20} className="text-pulse-blue" />
+                    </div>
                     {link.label}
                   </motion.a>
                 ))}
+
                 <motion.a
                   href="#contact"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
+                  transition={{ delay: 0.45 }}
                   onClick={() => setMobileOpen(false)}
-                  className="mt-4 rounded-md border border-synapse-gold px-8 py-3 font-mono text-sm uppercase tracking-wider text-synapse-gold"
+                  className="mt-6 w-full max-w-xs rounded-2xl border border-synapse-gold/60 py-4 text-center font-mono text-sm uppercase tracking-wider text-synapse-gold transition-all hover:bg-synapse-gold/10"
                 >
                   Contact Us
                 </motion.a>

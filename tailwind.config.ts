@@ -24,6 +24,7 @@ const config: Config = {
         clash: ["var(--font-clash)", "sans-serif"],
         inter: ["var(--font-inter)", "sans-serif"],
         mono: ["var(--font-geist-mono)", "monospace"],
+        "brand-script": ["var(--font-brand-script)", "cursive"],
       },
       animation: {
         "float": "float 6s ease-in-out infinite",

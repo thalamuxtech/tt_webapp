@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
+import { Inter, Caveat } from "next/font/google";
 import "./globals.css";
 
 const geistMono = localFont({
@@ -12,6 +12,15 @@ const geistMono = localFont({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+// Script font — stand-in for "Nexa Rust Script R"
+// Replace with actual Nexa Rust font file via localFont() when available
+const brandScript = Caveat({
+  subsets: ["latin"],
+  variable: "--font-brand-script",
+  weight: ["700"],
   display: "swap",
 });
 
@@ -66,7 +75,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${clashDisplay.variable} ${geistMono.variable} font-inter antialiased`}
+        className={`${inter.variable} ${clashDisplay.variable} ${geistMono.variable} ${brandScript.variable} font-inter antialiased`}
       >
         {children}
       </body>
