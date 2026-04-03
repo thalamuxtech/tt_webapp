@@ -270,10 +270,10 @@ export default function ContactForm() {
                 We couldn&apos;t process your request right now. Please try
                 again or reach us directly at{" "}
                 <a
-                  href="mailto:hello@thalamuxtech.com"
+                  href="mailto:thalamuxtech@gmail.com"
                   className="text-pulse-blue hover:underline"
                 >
-                  hello@thalamuxtech.com
+                  thalamuxtech@gmail.com
                 </a>
               </motion.p>
 
