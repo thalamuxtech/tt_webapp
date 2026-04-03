@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Thalamux Tech — Web App
+
+Premium landing site and admin portal for **Thalamux Tech** — the intelligent gateway delivering precision-driven solutions across Data, Analytics, Consultancy, AI, and Automation.
+
+**Live:** [thalamux-tech.web.app](https://thalamux-tech.web.app)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router, Static Export) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Animation | Framer Motion, tsparticles |
+| Forms | React Hook Form + Zod |
+| Backend | Firebase (Firestore, Auth, Analytics) |
+| Hosting | Firebase Hosting |
+| CI/CD | GitHub Actions → Firebase auto-deploy on push |
+
+## Features
+
+**Landing Page**
+- Neural particle hero with animated gradient text
+- Five Pillars service cards with hover effects
+- How We Work process section
+- Core Values glass-morphism cards
+- Auto-scrolling trusted customers marquee
+- Animated count-up trust metrics
+- Service request form → Firestore
+- Newsletter signup → Firestore
+- Toast notification system (success/error/warning/info)
+- Animated form success (checkmark + sparkles) and error states
+- Mobile-first responsive (320px → 1920px)
+
+**Admin Portal** (`/admin`)
+- Firebase Auth (Email/Password + Google SSO)
+- Real-time dashboard with stat cards and charts
+- Service requests table with search, filter, status update, detail drawer, CSV export
+- Newsletter signups table with bulk actions and CSV export
+- Google Analytics integration link
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install
+npm install
+
+# Dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.example` to `.env.local` and fill in Firebase config values.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pushes to `main` auto-deploy to Firebase Hosting via GitHub Actions.
 
-## Learn More
+**Required GitHub Secrets:**
+- `NEXT_PUBLIC_FIREBASE_*` (7 Firebase config vars)
+- `FIREBASE_SERVICE_ACCOUNT` (service account JSON)
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/           → Next.js pages (home, admin/login, admin/dashboard)
+components/    → React components (NavBar, Hero, Pillars, Toast, etc.)
+lib/           → Firebase config, auth context, motion variants, utils
+public/        → Images, favicon, client logos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`Next.js` `TypeScript` `Tailwind CSS` `Firebase` `Framer Motion` `Zod` `React Hook Form`
