@@ -20,9 +20,14 @@ const schema = z.object({
   name: z.string().min(2, "Name is required"),
   company: z.string().min(1, "Company is required"),
   email: z.string().email("Valid email required"),
+  phone: z.string().optional(),
   service: z.enum(
     ["data", "analytics", "consultancy", "ai", "automation", "full_suite"],
     { message: "Select a service" }
+  ),
+  timeline: z.enum(
+    ["2_weeks", "1_month", "2_months", "3_months_plus"],
+    { message: "Select a timeline" }
   ),
   message: z.string().min(10, "Tell us more (at least 10 characters)"),
 });
@@ -36,6 +41,13 @@ const services = [
   { value: "ai", label: "Artificial Intelligence" },
   { value: "automation", label: "Automation" },
   { value: "full_suite", label: "Full Suite" },
+];
+
+const timelines = [
+  { value: "2_weeks", label: "In 2 weeks" },
+  { value: "1_month", label: "In 1 month" },
+  { value: "2_months", label: "In 2 months" },
+  { value: "3_months_plus", label: "3 months+" },
 ];
 
 // Animated checkmark SVG
@@ -379,6 +391,19 @@ export default function ContactForm() {
                   </AnimatePresence>
                 </div>
 
+                {/* Phone */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                    Phone Number
+                  </label>
+                  <input
+                    {...register("phone")}
+                    type="tel"
+                    placeholder="+1 (555) 000-0000"
+                    className={inputClass}
+                  />
+                </div>
+
                 {/* Service */}
                 <div>
                   <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
@@ -416,18 +441,56 @@ export default function ContactForm() {
                     )}
                   </AnimatePresence>
                 </div>
+
+                {/* Timeline */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                    When do you expect to start? <span className="text-synapse-gold">*</span>
+                  </label>
+                  <select
+                    {...register("timeline")}
+                    className={`${inputClass} appearance-none`}
+                    defaultValue=""
+                  >
+                    <option value="" disabled className="bg-surface-deep">
+                      Select a timeline...
+                    </option>
+                    {timelines.map((t) => (
+                      <option
+                        key={t.value}
+                        value={t.value}
+                        className="bg-surface-deep"
+                      >
+                        {t.label}
+                      </option>
+                    ))}
+                  </select>
+                  <AnimatePresence>
+                    {errors.timeline && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.timeline.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
               {/* Message */}
               <div className="mt-5">
                 <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
-                  Tell us about your challenge{" "}
+                  Tell us about your project{" "}
                   <span className="text-synapse-gold">*</span>
                 </label>
                 <textarea
                   {...register("message")}
                   rows={4}
-                  placeholder="Describe your data challenges, goals, or vision..."
+                  placeholder="Describe your project, goals, or vision and let us do the rest..."
                   className={`${inputClass} resize-none`}
                 />
                 <AnimatePresence>

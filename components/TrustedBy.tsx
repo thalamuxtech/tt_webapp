@@ -17,6 +17,12 @@ const clients = [
     type: "image" as const,
   },
   {
+    name: "Scholarly Echo",
+    logo: "/images/scholarlyecho.png",
+    url: "https://scholarly-echo.web.app",
+    type: "image" as const,
+  },
+  {
     name: "NovaTrust Capital",
     logo: null,
     url: "#",

@@ -18,7 +18,7 @@ const pillars = [
     name: "DATA",
     label: "The Raw Signal",
     description:
-      "We capture, cleanse, structure, and govern your data with military-grade discipline — ensuring your foundation is unshakable.",
+      "We capture, cleanse, structure, and govern your data — building an unshakable foundation so your business can overcome challenges and scale with confidence.",
     icon: Database,
     gradient: "from-pulse-blue/20 via-pulse-blue/5 to-transparent",
     iconBg: "bg-pulse-blue/10 text-pulse-blue group-hover:bg-pulse-blue/20",
@@ -30,7 +30,7 @@ const pillars = [
     name: "ANALYTICS",
     label: "The Filtered Intelligence",
     description:
-      "We transform raw data into visual, predictive, and prescriptive intelligence. Decision-makers see exactly what they need.",
+      "We turn raw data into powerful visualization and storytelling — transforming numbers into narratives that drive smarter decisions and business growth.",
     icon: BarChart3,
     gradient: "from-circuit-teal/20 via-circuit-teal/5 to-transparent",
     iconBg: "bg-circuit-teal/10 text-circuit-teal group-hover:bg-circuit-teal/20",
@@ -42,7 +42,7 @@ const pillars = [
     name: "CONSULTANCY",
     label: "The Strategic Routing",
     description:
-      "We don't just advise — we architect transformation. Our consultants embed, diagnose, and design actionable roadmaps.",
+      "We advise businesses on how to leverage technology and AI to grow and scale. Our consultants embed, diagnose friction, and design actionable transformation roadmaps.",
     icon: Users,
     gradient: "from-synapse-gold/20 via-synapse-gold/5 to-transparent",
     iconBg: "bg-synapse-gold/10 text-synapse-gold group-hover:bg-synapse-gold/20",
@@ -54,7 +54,7 @@ const pillars = [
     name: "AI",
     label: "The Thinking Layer",
     description:
-      "We build AI that reasons, learns, and acts — from ML models and NLP to computer vision and generative AI.",
+      "We provide AI consultancy and build intelligent solutions — from ML models and NLP to generative AI — helping businesses understand and adopt AI to gain competitive advantage.",
     icon: Brain,
     gradient: "from-violet-500/20 via-violet-500/5 to-transparent",
     iconBg: "bg-violet-500/10 text-violet-400 group-hover:bg-violet-500/20",
@@ -66,7 +66,7 @@ const pillars = [
     name: "AUTOMATION",
     label: "The Relentless Executor",
     description:
-      "We eliminate repetition, accelerate workflows, and build systems that work while you sleep.",
+      "We implement strategic AI workflow automation using tools like Gumloop, Zapier, and n8n — eliminating repetition so your team can focus on what truly matters.",
     icon: Cog,
     gradient: "from-emerald-500/20 via-emerald-500/5 to-transparent",
     iconBg: "bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20",
@@ -87,7 +87,7 @@ export default function Pillars() {
         <SectionHeading
           eyebrow="What We Do"
           title="Five Pillars of Precision"
-          subtitle="Every domain engineered to intercept complexity and deliver clarity."
+          subtitle="Helping businesses overcome challenges, grow, and scale — through precision-engineered solutions across five critical domains."
         />
 
         {/* Desktop: 5 columns, Tablet: 3+2, Mobile: stack */}
