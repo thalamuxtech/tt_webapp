@@ -198,8 +198,8 @@ export default function TrainingPrograms() {
             What These Programs Actually Deliver
           </h3>
           <p className="mx-auto mt-4 max-w-2xl text-base text-signal-white/55">
-            Training is only worth the time it returns. Here's what organizations
-            and individuals walk away with when the work is done.
+            Training is only worth the time it returns. Here&apos;s what
+            organizations and individuals walk away with when the work is done.
           </p>
         </ScrollReveal>
 
