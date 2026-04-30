@@ -2,6 +2,7 @@ import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import BrandStatement from "@/components/BrandStatement";
 import Pillars from "@/components/Pillars";
+import TrainingPrograms from "@/components/TrainingPrograms";
 import HowWeWork from "@/components/HowWeWork";
 import CoreValues from "@/components/CoreValues";
 import TrustedBy from "@/components/TrustedBy";
@@ -20,6 +21,7 @@ export default function Home() {
         <Hero />
         <BrandStatement />
         <Pillars />
+        <TrainingPrograms />
         <HowWeWork />
         <CoreValues />
         <TrustedBy />

@@ -23,6 +23,18 @@ const clients = [
     type: "image" as const,
   },
   {
+    name: "Apex-Line Studios",
+    logo: "/images/apexline.png",
+    url: "https://apexline-studios.web.app",
+    type: "image" as const,
+  },
+  {
+    name: "NAU Maternity Centre",
+    logo: "/images/nau-maternity.png",
+    url: "https://nau-maternity-center.web.app/",
+    type: "image" as const,
+  },
+  {
     name: "NovaTrust Capital",
     logo: null,
     url: "#",

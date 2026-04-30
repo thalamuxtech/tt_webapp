@@ -141,30 +141,33 @@ export default function BrandStatement() {
           {/* Right — Copy */}
           <ScrollReveal variants={slideFromRight}>
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-synapse-gold">
-              Data to Insight. Intelligence to Action.
+              Engineering excellence in AI & Technology
             </span>
 
             <h2 className="mt-5 font-clash text-3xl font-bold leading-snug text-signal-white sm:text-4xl lg:text-[2.75rem]">
-              Like the thalamus commands every signal in the brain, we command
-              every signal in your business.
+              We build, deploy, and train teams on the AI and technology that
+              moves modern businesses forward.
             </h2>
 
             <p className="mt-6 text-base leading-relaxed text-signal-white/60 sm:text-lg">
-              In the human brain, the thalamus is the master relay station.
-              Every signal — sight, sound, touch — routes through it before
-              reaching consciousness. It decides what matters. It filters noise.
-              It commands purpose.
+              Thalamux Tech is an AI and technology services firm. We design
+              intelligent software, deploy production-grade machine learning,
+              automate the work that drains your team, and train your people to
+              own the tools — end to end, with engineering rigor and measurable
+              outcomes.
             </p>
             <p className="mt-4 text-base leading-relaxed text-signal-white/60 sm:text-lg">
-              That is exactly what Thalamux Tech does for your business.
+              From early-stage startups to established enterprises, we partner
+              with leaders who treat AI as a capability to build, not a buzzword
+              to chase.
             </p>
 
             {/* Pull quote */}
             <blockquote className="gold-border-left mt-8">
               <p className="text-lg italic leading-relaxed text-synapse-gold/90 sm:text-xl">
-                &ldquo;We don&apos;t just process your challenges. We decode
-                them, dominate them, and deliver outcomes that redefine what your
-                operation is capable of.&rdquo;
+                &ldquo;We deliver AI and technology that ships, scales, and
+                stands up under real-world load — not slide decks, not
+                experiments, but working systems your team can run.&rdquo;
               </p>
             </blockquote>
 

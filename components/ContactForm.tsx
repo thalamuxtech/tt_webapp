@@ -11,6 +11,7 @@ import { useToast } from "./Toast";
 import dynamic from "next/dynamic";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { countries } from "@/lib/countries";
 
 const NeuralParticles = dynamic(() => import("./NeuralParticles"), {
   ssr: false,
@@ -21,14 +22,33 @@ const schema = z.object({
   company: z.string().min(1, "Company is required"),
   email: z.string().email("Valid email required"),
   phone: z.string().optional(),
+  country: z.string().min(1, "Select a country"),
+  state: z.string().optional(),
+  companySize: z.enum(
+    ["1-10", "11-50", "51-200", "201-1000", "1000+"],
+    { message: "Select company size" }
+  ),
   service: z.enum(
-    ["data", "analytics", "consultancy", "ai", "automation", "full_suite"],
+    [
+      "data",
+      "analytics",
+      "consultancy",
+      "ai",
+      "automation",
+      "training",
+      "full_suite",
+    ],
     { message: "Select a service" }
+  ),
+  budget: z.enum(
+    ["under_1k", "1k_5k", "5k_10k", "10k_20k", "20k_plus", "not_sure"],
+    { message: "Select a budget range" }
   ),
   timeline: z.enum(
     ["2_weeks", "1_month", "2_months", "3_months_plus"],
     { message: "Select a timeline" }
   ),
+  heardFrom: z.string().optional(),
   message: z.string().min(10, "Tell us more (at least 10 characters)"),
 });
 
@@ -40,7 +60,25 @@ const services = [
   { value: "consultancy", label: "Consultancy" },
   { value: "ai", label: "Artificial Intelligence" },
   { value: "automation", label: "Automation" },
+  { value: "training", label: "AI & Tech Training" },
   { value: "full_suite", label: "Full Suite" },
+];
+
+const companySizes = [
+  { value: "1-10", label: "1–10 employees" },
+  { value: "11-50", label: "11–50 employees" },
+  { value: "51-200", label: "51–200 employees" },
+  { value: "201-1000", label: "201–1,000 employees" },
+  { value: "1000+", label: "1,000+ employees" },
+];
+
+const budgets = [
+  { value: "under_1k", label: "Under $1,000" },
+  { value: "1k_5k", label: "$1,000 – $5,000" },
+  { value: "5k_10k", label: "$5,000 – $10,000" },
+  { value: "10k_20k", label: "$10,000 – $20,000" },
+  { value: "20k_plus", label: "$20,000+" },
+  { value: "not_sure", label: "Not sure yet" },
 ];
 
 const timelines = [
@@ -404,6 +442,129 @@ export default function ContactForm() {
                   />
                 </div>
 
+                {/* Country */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                    Country <span className="text-synapse-gold">*</span>
+                  </label>
+                  <select
+                    {...register("country")}
+                    className={`${inputClass} appearance-none`}
+                    defaultValue=""
+                  >
+                    <option value="" disabled className="bg-surface-deep">
+                      Select your country...
+                    </option>
+                    {countries.map((c) => (
+                      <option key={c} value={c} className="bg-surface-deep">
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                  <AnimatePresence>
+                    {errors.country && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.country.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* State / Region */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                    State / Region / Province
+                  </label>
+                  <input
+                    {...register("state")}
+                    type="text"
+                    placeholder="e.g. Lagos, California, Bavaria"
+                    className={inputClass}
+                  />
+                </div>
+
+                {/* Company Size */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                    Company Size <span className="text-synapse-gold">*</span>
+                  </label>
+                  <select
+                    {...register("companySize")}
+                    className={`${inputClass} appearance-none`}
+                    defaultValue=""
+                  >
+                    <option value="" disabled className="bg-surface-deep">
+                      Select company size...
+                    </option>
+                    {companySizes.map((c) => (
+                      <option
+                        key={c.value}
+                        value={c.value}
+                        className="bg-surface-deep"
+                      >
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                  <AnimatePresence>
+                    {errors.companySize && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.companySize.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Budget */}
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                    Budget Range (USD) <span className="text-synapse-gold">*</span>
+                  </label>
+                  <select
+                    {...register("budget")}
+                    className={`${inputClass} appearance-none`}
+                    defaultValue=""
+                  >
+                    <option value="" disabled className="bg-surface-deep">
+                      Select a budget range...
+                    </option>
+                    {budgets.map((b) => (
+                      <option
+                        key={b.value}
+                        value={b.value}
+                        className="bg-surface-deep"
+                      >
+                        {b.label}
+                      </option>
+                    ))}
+                  </select>
+                  <AnimatePresence>
+                    {errors.budget && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -5, height: 0 }}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-red-400"
+                      >
+                        <XCircle size={12} />
+                        {errors.budget.message}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 {/* Service */}
                 <div>
                   <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
@@ -479,6 +640,19 @@ export default function ContactForm() {
                     )}
                   </AnimatePresence>
                 </div>
+              </div>
+
+              {/* How did you hear about us */}
+              <div className="mt-5">
+                <label className="mb-1.5 block text-xs font-medium text-signal-white/70">
+                  How did you hear about us?
+                </label>
+                <input
+                  {...register("heardFrom")}
+                  type="text"
+                  placeholder="e.g. LinkedIn, referral, search, event"
+                  className={inputClass}
+                />
               </div>
 
               {/* Message */}

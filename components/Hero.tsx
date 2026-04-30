@@ -60,8 +60,9 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.35 }}
           className="mx-auto mt-6 max-w-xl text-base text-signal-white/60 sm:text-lg sm:leading-relaxed"
         >
-          We intercept complexity, filter the noise, and route precision-driven
-          solutions across Data, Analytics, Consultancy, AI, and Automation.
+          AI and technology services delivered with engineering excellence —
+          consulting, custom AI builds, automation, and hands-on training that
+          turns ambition into shipped capability.
         </motion.p>
 
         {/* CTA Buttons */}
